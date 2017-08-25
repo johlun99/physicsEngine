@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using PhysicsEngine01.Objects;
+using System.Collections.Generic;
 
 namespace PhysicsEngine01
 {
@@ -14,13 +15,16 @@ namespace PhysicsEngine01
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        SpriteFont debugFont;
+
         Texture2D ballTexture;
         Texture2D hitboxColor;
 
-        Ball ball;
-
         int screenHeight;
         int screenWidth;
+        int counter = 0;
+
+        List<Ball> balls = new List<Ball>();
 
         public GameEngine()
         {
@@ -43,8 +47,6 @@ namespace PhysicsEngine01
 
             hitboxColor = new Texture2D(GraphicsDevice, 1, 1);
             hitboxColor.SetData<Color>(new Color[] { Color.Red });
-
-            ball = new Ball(ballTexture, new Vector2(100, 100), new Vector2(0, 0));
         }
 
         /// <summary>
@@ -57,6 +59,8 @@ namespace PhysicsEngine01
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            debugFont = Content.Load<SpriteFont>("debugFont");
+
             ballTexture = Content.Load<Texture2D>("Objects/ball");
         }
 
@@ -80,9 +84,29 @@ namespace PhysicsEngine01
                 Exit();
 
             // TODO: Add your update logic here
-            ball.Update(screenHeight);
+            MouseState mouse = Mouse.GetState();
+            if (mouse.LeftButton == ButtonState.Pressed)
+            {
+                createBall();
+            }
+
+            foreach (var b in balls)
+            {
+                b.Update(screenHeight);
+            }
+
+            counter = balls.Count;
 
             base.Update(gameTime);
+        }
+
+        private void createBall()
+        {
+            MouseState mouse = Mouse.GetState();
+
+            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0));
+
+            balls.Add(b);
         }
 
         /// <summary>
@@ -96,7 +120,12 @@ namespace PhysicsEngine01
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            ball.Draw(spriteBatch, ballTexture, hitboxColor);
+            foreach (var b in balls)
+            {
+                b.Draw(spriteBatch, ballTexture);
+            }
+
+            spriteBatch.DrawString(debugFont, $"Counter: {counter}", new Vector2(20, 30), Color.White);
 
             spriteBatch.End();
 
