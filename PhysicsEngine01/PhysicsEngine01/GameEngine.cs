@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using PhysicsEngine01.Objects;
+
 namespace PhysicsEngine01
 {
     /// <summary>
@@ -11,6 +13,11 @@ namespace PhysicsEngine01
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        Texture2D ballTexture;
+        Texture2D hitboxColor;
+
+        Ball ball;
 
         public GameEngine()
         {
@@ -26,9 +33,12 @@ namespace PhysicsEngine01
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+
+            hitboxColor = new Texture2D(GraphicsDevice, 1, 1);
+            hitboxColor.SetData<Color>(new Color[] { Color.Red });
+
+            ball = new Ball(ballTexture, new Vector2(100, 100));
         }
 
         /// <summary>
@@ -41,6 +51,7 @@ namespace PhysicsEngine01
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            ballTexture = Content.Load<Texture2D>("Objects/ball");
         }
 
         /// <summary>
@@ -63,6 +74,7 @@ namespace PhysicsEngine01
                 Exit();
 
             // TODO: Add your update logic here
+            ball.Update();
 
             base.Update(gameTime);
         }
@@ -76,6 +88,11 @@ namespace PhysicsEngine01
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            ball.Draw(spriteBatch, ballTexture, hitboxColor);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
