@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using PhysicsEngine01.Objects;
+using PhysicsEngine01.Other;
 using System.Collections.Generic;
 
 namespace PhysicsEngine01
@@ -15,6 +16,8 @@ namespace PhysicsEngine01
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        FPSCounter fps;
+
         SpriteFont debugFont;
 
         Texture2D ballTexture;
@@ -22,7 +25,9 @@ namespace PhysicsEngine01
 
         int screenHeight;
         int screenWidth;
-        int counter = 0;
+        int ballCounter = 0;
+
+        float fpsCounter = 0;
 
         List<Ball> balls = new List<Ball>();
 
@@ -44,6 +49,8 @@ namespace PhysicsEngine01
             screenWidth = GraphicsDevice.Viewport.Bounds.Width;
 
             base.Initialize();
+
+            fps = new FPSCounter();
 
             hitboxColor = new Texture2D(GraphicsDevice, 1, 1);
             hitboxColor.SetData<Color>(new Color[] { Color.Red });
@@ -95,7 +102,9 @@ namespace PhysicsEngine01
                 b.Update(screenHeight);
             }
 
-            counter = balls.Count;
+            fps.Update((float)gameTime.TotalGameTime.TotalSeconds);
+            fpsCounter = fps.CurrentFramesPerSecond;
+            ballCounter = balls.Count;
 
             base.Update(gameTime);
         }
@@ -125,7 +134,8 @@ namespace PhysicsEngine01
                 b.Draw(spriteBatch, ballTexture);
             }
 
-            spriteBatch.DrawString(debugFont, $"Counter: {counter}", new Vector2(20, 30), Color.White);
+            spriteBatch.DrawString(debugFont, $"FPS: {fpsCounter}", new Vector2(20, 20), Color.White);
+            spriteBatch.DrawString(debugFont, $"Counter: {ballCounter}", new Vector2(20, 40), Color.White);
 
             spriteBatch.End();
 

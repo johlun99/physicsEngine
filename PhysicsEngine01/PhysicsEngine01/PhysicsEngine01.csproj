@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="GameEngine.cs" />
     <Compile Include="Objects\Ball.cs" />
+    <Compile Include="Other\Crosshair.cs" />
+    <Compile Include="Other\FPSCounter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
