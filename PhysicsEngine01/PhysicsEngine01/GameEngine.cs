@@ -17,6 +17,7 @@ namespace PhysicsEngine01
         SpriteBatch spriteBatch;
 
         FPSCounter fps;
+        Crosshair crosshair;
 
         SpriteFont debugFont;
 
@@ -68,6 +69,8 @@ namespace PhysicsEngine01
             // TODO: use this.Content to load your game content here
             debugFont = Content.Load<SpriteFont>("debugFont");
 
+            crosshair = new Crosshair(Content.Load<Texture2D>("other/redcrosshair"), 0.1f);
+
             ballTexture = Content.Load<Texture2D>("Objects/ball");
         }
 
@@ -96,19 +99,22 @@ namespace PhysicsEngine01
             {
                 createBall();
             }
+            crosshair.Update(new Vector2(mouse.Position.X, mouse.Position.Y));
 
             foreach (var b in balls)
             {
                 b.Update(screenHeight);
             }
 
-            fps.Update((float)gameTime.TotalGameTime.TotalSeconds);
             fpsCounter = fps.CurrentFramesPerSecond;
             ballCounter = balls.Count;
 
             base.Update(gameTime);
         }
 
+        /// <summary>
+        /// Creates a new ball and adds it to the screen
+        /// </summary>
         private void createBall()
         {
             MouseState mouse = Mouse.GetState();
@@ -134,8 +140,11 @@ namespace PhysicsEngine01
                 b.Draw(spriteBatch, ballTexture);
             }
 
+            fps.Update((float)gameTime.TotalGameTime.TotalSeconds);
             spriteBatch.DrawString(debugFont, $"FPS: {fpsCounter}", new Vector2(20, 20), Color.White);
             spriteBatch.DrawString(debugFont, $"Counter: {ballCounter}", new Vector2(20, 40), Color.White);
+
+            crosshair.Draw(spriteBatch);
 
             spriteBatch.End();
 
