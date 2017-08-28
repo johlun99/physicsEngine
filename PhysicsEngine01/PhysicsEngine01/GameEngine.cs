@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using PhysicsEngine01.Objects;
 using PhysicsEngine01.Other;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PhysicsEngine01
 {
@@ -27,6 +28,8 @@ namespace PhysicsEngine01
         int screenHeight;
         int screenWidth;
         int ballCounter = 0;
+
+        double ballTimer = 0;
 
         float fpsCounter = 0;
 
@@ -93,17 +96,29 @@ namespace PhysicsEngine01
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
             MouseState mouse = Mouse.GetState();
-            if (mouse.LeftButton == ButtonState.Pressed)
+
+            // Keep track of delay between balls
+            ballTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            // Create new balls if the delay is correct
+            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 400)
             {
+                ballTimer = 0;
                 createBall();
             }
             crosshair.Update(new Vector2(mouse.Position.X, mouse.Position.Y));
 
+            // Update all the balls
             foreach (var b in balls)
             {
+                /*if (b.Position.Y >= screenHeight - 60)
+                {
+                    b.AddForce(new Vector2(2, -10));
+                }*/
+
                 b.Update(screenHeight);
+                checkBallCollisions();
             }
 
             fpsCounter = fps.CurrentFramesPerSecond;
@@ -119,9 +134,19 @@ namespace PhysicsEngine01
         {
             MouseState mouse = Mouse.GetState();
 
-            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0));
+            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 2);
 
             balls.Add(b);
+        }
+
+        private void checkBallCollisions()
+        {
+            for (int i = 0; i < balls.Count; i++)
+                for (int j = 0; j < balls.Count; j++)
+                    if (i != j && balls[i].Hitbox.Intersects(balls[j].Hitbox))
+                    {
+                        Debug.WriteLine($"Collision detected between balls[{i}] & balls[{j}]");
+                    }
         }
 
         /// <summary>
@@ -130,14 +155,14 @@ namespace PhysicsEngine01
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
             foreach (var b in balls)
             {
-                b.Draw(spriteBatch, ballTexture);
+                b.Draw(spriteBatch, ballTexture, hitboxColor);
             }
 
             fps.Update((float)gameTime.TotalGameTime.TotalSeconds);

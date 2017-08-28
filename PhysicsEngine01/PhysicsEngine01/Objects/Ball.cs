@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace PhysicsEngine01.Objects
 {
     class Ball
     {
-        #region Variables
+        #region Variables & properties
         Rectangle sourceRectangle;
         Rectangle hitbox;
 
@@ -23,13 +17,35 @@ namespace PhysicsEngine01.Objects
         const float gravityAccelleration = 0.8f;
         float scale = 0.03f;
         float rotation = 0;
+        float mass;
+
+        public Vector2 Position
+        {
+            get
+            {
+                Vector2 temp = position;
+                temp.Y -= origin.Y * scale;
+                temp.X -= origin.X * scale;
+
+                return temp;
+            }
+        }
+
+        public Rectangle Hitbox { get { return hitbox; } }
         #endregion
 
         #region Methods
-        public Ball(Texture2D texture, Vector2 position, Vector2 force)
+        /// <summary>
+        /// Initates the base values of the balls
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="position"></param>
+        /// <param name="force"></param>
+        public Ball(Texture2D texture, Vector2 position, Vector2 force, float mass)
         {
             this.position = position;
             this.force = force;
+            this.mass = mass;
 
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;
@@ -51,6 +67,8 @@ namespace PhysicsEngine01.Objects
             velocity.Y += gravityAccelleration;
             position += velocity;
 
+            force = velocity * mass;
+
             hitbox.X = (int)(position.X - origin.X * scale);
             hitbox.Y = (int)(position.Y - origin.Y * scale);
 
@@ -59,6 +77,12 @@ namespace PhysicsEngine01.Objects
                 velocity.Y = 0 - velocity.Y + 2;
                 position.Y = screenHeight - origin.Y * scale;
             }
+        }
+
+        public void AddForce(Vector2 force)
+        {
+            this.force = force + this.force;
+            velocity = force * mass;
         }
 
         /// <summary>
