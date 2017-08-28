@@ -145,7 +145,7 @@ namespace PhysicsEngine01
                 for (int j = 0; j < balls.Count; j++)
                     if (i != j && balls[i].Hitbox.Intersects(balls[j].Hitbox))
                     {
-                        Debug.WriteLine($"Ctollision detected between balls[{i}] & balls[{j}]");
+                        Debug.WriteLine($"Collision detected between balls[{i}] & balls[{j}]");
                     }
         }
 
