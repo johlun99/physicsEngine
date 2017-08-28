@@ -6,6 +6,7 @@ using PhysicsEngine01.Objects;
 using PhysicsEngine01.Other;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace PhysicsEngine01
 {
@@ -16,6 +17,9 @@ namespace PhysicsEngine01
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        ThreadStart collisionCheckThread;
+        Thread CollisionChecker;
 
         FPSCounter fps;
         Crosshair crosshair;
@@ -58,6 +62,9 @@ namespace PhysicsEngine01
 
             hitboxColor = new Texture2D(GraphicsDevice, 1, 1);
             hitboxColor.SetData<Color>(new Color[] { Color.Red });
+
+            collisionCheckThread = new ThreadStart(checkBallCollisions);
+            CollisionChecker = new Thread(collisionCheckThread);
         }
 
         /// <summary>
@@ -118,8 +125,9 @@ namespace PhysicsEngine01
                 }*/
 
                 b.Update(screenHeight);
-                checkBallCollisions();
             }
+
+            //checkBallCollisions();
 
             fpsCounter = fps.CurrentFramesPerSecond;
             ballCounter = balls.Count;
