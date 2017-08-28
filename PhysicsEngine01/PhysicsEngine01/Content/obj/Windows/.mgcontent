@@ -4,8 +4,8 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/lundg/Desktop/Lab projects/physicsEngine/PhysicsEngine01/PhysicsEngine01/Content/Objects/ball.png</File>
-    <File>C:/Users/lundg/Desktop/Lab projects/physicsEngine/PhysicsEngine01/PhysicsEngine01/Content/debugFont.spritefont</File>
-    <File>C:/Users/lundg/Desktop/Lab projects/physicsEngine/PhysicsEngine01/PhysicsEngine01/Content/other/redcrosshair.png</File>
+    <File>C:/Users/johan.lundgren4/Documents/GymnasieArbete/physicsEngine/PhysicsEngine01/PhysicsEngine01/Content/Objects/ball.png</File>
+    <File>C:/Users/johan.lundgren4/Documents/GymnasieArbete/physicsEngine/PhysicsEngine01/PhysicsEngine01/Content/debugFont.spritefont</File>
+    <File>C:/Users/johan.lundgren4/Documents/GymnasieArbete/physicsEngine/PhysicsEngine01/PhysicsEngine01/Content/other/redcrosshair.png</File>
   </SourceFiles>
 </SourceFileCollection>

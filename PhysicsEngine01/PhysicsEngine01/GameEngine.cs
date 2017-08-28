@@ -28,6 +28,8 @@ namespace PhysicsEngine01
         int screenWidth;
         int ballCounter = 0;
 
+        double ballTimer = 0;
+
         float fpsCounter = 0;
 
         List<Ball> balls = new List<Ball>();
@@ -94,9 +96,12 @@ namespace PhysicsEngine01
                 Exit();
 
             // TODO: Add your update logic here
+            ballTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
             MouseState mouse = Mouse.GetState();
-            if (mouse.LeftButton == ButtonState.Pressed)
+            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 400)
             {
+                ballTimer = 0;
                 createBall();
             }
             crosshair.Update(new Vector2(mouse.Position.X, mouse.Position.Y));
