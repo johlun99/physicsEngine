@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using PhysicsEngine01.Objects;
 using PhysicsEngine01.Other;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PhysicsEngine01
 {
@@ -111,12 +112,13 @@ namespace PhysicsEngine01
             // Update all the balls
             foreach (var b in balls)
             {
-                b.Update(screenHeight);
-
-                if (b.Position.Y >= screenHeight - 950)
+                /*if (b.Position.Y >= screenHeight - 60)
                 {
                     b.AddForce(new Vector2(2, -10));
-                }
+                }*/
+
+                b.Update(screenHeight);
+                checkBallCollisions(b);
             }
 
             fpsCounter = fps.CurrentFramesPerSecond;
@@ -135,6 +137,19 @@ namespace PhysicsEngine01
             Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 2);
 
             balls.Add(b);
+        }
+
+        private void checkBallCollisions(Ball ball)
+        {
+            foreach (Ball b in balls)
+            {
+                if (ball.Hitbox.Intersects(b.Hitbox))
+                {
+                    Debug.WriteLine("Collision detected");
+                    //Vector2 direction = ball.Position - b.Position;
+                    //ball.AddForce(direction);
+                }
+            }
         }
 
         /// <summary>

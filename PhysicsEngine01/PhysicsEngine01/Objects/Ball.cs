@@ -19,7 +19,19 @@ namespace PhysicsEngine01.Objects
         float rotation = 0;
         float mass;
 
-        public Vector2 Position { get { return position - origin; } }
+        public Vector2 Position
+        {
+            get
+            {
+                Vector2 temp = position;
+                temp.Y -= origin.Y * scale;
+                temp.X -= origin.X * scale;
+
+                return temp;
+            }
+        }
+
+        public Rectangle Hitbox { get { return hitbox; } }
         #endregion
 
         #region Methods
