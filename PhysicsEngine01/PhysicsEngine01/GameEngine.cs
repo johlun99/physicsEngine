@@ -95,10 +95,12 @@ namespace PhysicsEngine01
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            MouseState mouse = Mouse.GetState();
+
+            // Keep track of delay between balls
             ballTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            MouseState mouse = Mouse.GetState();
+            // Create new balls if the delay is correct
             if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 400)
             {
                 ballTimer = 0;
@@ -106,9 +108,15 @@ namespace PhysicsEngine01
             }
             crosshair.Update(new Vector2(mouse.Position.X, mouse.Position.Y));
 
+            // Update all the balls
             foreach (var b in balls)
             {
                 b.Update(screenHeight);
+
+                if (b.Position.Y >= screenHeight - 950)
+                {
+                    b.AddForce(new Vector2(2, -10));
+                }
             }
 
             fpsCounter = fps.CurrentFramesPerSecond;
@@ -124,7 +132,7 @@ namespace PhysicsEngine01
         {
             MouseState mouse = Mouse.GetState();
 
-            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0));
+            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 2);
 
             balls.Add(b);
         }
@@ -135,14 +143,14 @@ namespace PhysicsEngine01
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
             foreach (var b in balls)
             {
-                b.Draw(spriteBatch, ballTexture);
+                b.Draw(spriteBatch, ballTexture, hitboxColor);
             }
 
             fps.Update((float)gameTime.TotalGameTime.TotalSeconds);
