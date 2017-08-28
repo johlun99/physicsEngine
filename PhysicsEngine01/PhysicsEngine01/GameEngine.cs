@@ -118,7 +118,7 @@ namespace PhysicsEngine01
                 }*/
 
                 b.Update(screenHeight);
-                checkBallCollisions(b);
+                checkBallCollisions();
             }
 
             fpsCounter = fps.CurrentFramesPerSecond;
@@ -139,17 +139,14 @@ namespace PhysicsEngine01
             balls.Add(b);
         }
 
-        private void checkBallCollisions(Ball ball)
+        private void checkBallCollisions()
         {
-            foreach (Ball b in balls)
-            {
-                if (ball.Hitbox.Intersects(b.Hitbox))
-                {
-                    Debug.WriteLine("Collision detected");
-                    //Vector2 direction = ball.Position - b.Position;
-                    //ball.AddForce(direction);
-                }
-            }
+            for (int i = 0; i < balls.Count; i++)
+                for (int j = 0; j < balls.Count; j++)
+                    if (i != j && balls[i].Hitbox.Intersects(balls[j].Hitbox))
+                    {
+                        Debug.WriteLine($"Collision detected between balls[{i}] & balls[{j}]");
+                    }
         }
 
         /// <summary>
