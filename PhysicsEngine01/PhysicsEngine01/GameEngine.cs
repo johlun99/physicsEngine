@@ -110,7 +110,7 @@ namespace PhysicsEngine01
             ballTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // Create new balls if the delay is correct
-            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 400)
+            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 0)
             {
                 ballTimer = 0;
                 createBall();
@@ -125,7 +125,7 @@ namespace PhysicsEngine01
                     b.AddForce(new Vector2(2, -10));
                 }*/
 
-                b.Update(screenHeight);
+                b.Update();
             }
 
             checkBallCollisions();
@@ -143,11 +143,14 @@ namespace PhysicsEngine01
         {
             MouseState mouse = Mouse.GetState();
 
-            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 2);
+            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 2, screenHeight, screenWidth);
 
             balls.Add(b);
         }
 
+        /// <summary>
+        /// Itterate through all the balls on screen
+        /// </summary>
         private void checkBallCollisions()
         {
             for (int i = 0; i < balls.Count; i++)
@@ -156,7 +159,6 @@ namespace PhysicsEngine01
                     {
                         collisionCounter++;
                         balls[i].HandleCollision(balls[j]);
-                        //Debug.WriteLine($"Collision detected between balls[{i}] & balls[{j}]");
                     }
         }
 

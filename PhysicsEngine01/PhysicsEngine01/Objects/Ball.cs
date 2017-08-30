@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using PhysicsEngine01.PhysicsEngine;
+
 namespace PhysicsEngine01.Objects
 {
-    class Ball
+    class Ball : SolidObject
     {
         #region Variables & properties
-        Rectangle sourceRectangle;
+        /*Rectangle sourceRectangle;
         Rectangle hitbox;
 
         Vector2 position;
@@ -18,6 +20,9 @@ namespace PhysicsEngine01.Objects
         float scale = 0.03f;
         float rotation = 0;
         float mass;
+
+        int screenHeight;
+        int screenWidth;
 
         public Vector2 Position
         {
@@ -31,7 +36,7 @@ namespace PhysicsEngine01.Objects
             }
         }
 
-        public Rectangle Hitbox { get { return hitbox; } }
+        public Rectangle Hitbox { get { return hitbox; } }*/
         public float Radius { get { return hitbox.Width / 2; } }
         #endregion
 
@@ -42,11 +47,13 @@ namespace PhysicsEngine01.Objects
         /// <param name="texture"></param>
         /// <param name="position"></param>
         /// <param name="force"></param>
-        public Ball(Texture2D texture, Vector2 position, Vector2 force, float mass)
+        public Ball(Texture2D texture, Vector2 position, Vector2 force, float mass, int screenHeight, int screenWidth)
         {
             this.position = position;
             this.force = force;
             this.mass = mass;
+            this.screenHeight = screenHeight;
+            this.screenWidth = screenWidth;
 
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;
@@ -63,7 +70,7 @@ namespace PhysicsEngine01.Objects
         /// performs all neccessary calculations
         /// </summary>
         /// <param name="screenHeight"></param>
-        public void Update(int screenHeight)
+        public void Update()
         {
             velocity.Y += gravityAccelleration;
             position += velocity;
@@ -78,6 +85,12 @@ namespace PhysicsEngine01.Objects
                 velocity.Y = 0 - velocity.Y + 2;
                 position.Y = screenHeight - origin.Y * scale;
             }
+
+            if (position.X < 0 + origin.X * scale ||
+                position.X > screenWidth - origin.X * scale)
+            {
+                velocity.X = velocity.X * -1;
+            }
         }
 
         public void HandleCollision(Ball ball)
@@ -85,7 +98,8 @@ namespace PhysicsEngine01.Objects
             Vector2 direction = ball.position - position;
             direction.Normalize();
 
-            ball.AddForce(direction * 10);
+            ball.AddForce(direction * 4);
+            AddForce(direction * -4);
         }
 
         public void AddForce(Vector2 force)
