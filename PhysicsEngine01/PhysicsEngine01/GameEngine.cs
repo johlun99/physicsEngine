@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using PhysicsEngine01.Objects;
+using PhysicsEngine01.PhysicsEngine.Objects;
 using PhysicsEngine01.Other;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -110,7 +110,7 @@ namespace PhysicsEngine01
             ballTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // Create new balls if the delay is correct
-            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 0)
+            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 200)
             {
                 ballTimer = 0;
                 createBall();
@@ -143,7 +143,7 @@ namespace PhysicsEngine01
         {
             MouseState mouse = Mouse.GetState();
 
-            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 2, screenHeight, screenWidth);
+            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 1, screenHeight, screenWidth);
 
             balls.Add(b);
         }

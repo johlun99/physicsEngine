@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using PhysicsEngine01.PhysicsEngine;
-
-namespace PhysicsEngine01.Objects
+namespace PhysicsEngine01.PhysicsEngine.Objects
 {
     class Ball : SolidObject
     {
@@ -98,15 +96,16 @@ namespace PhysicsEngine01.Objects
             Vector2 direction = ball.position - position;
             direction.Normalize();
 
-            ball.AddForce(direction * 4);
-            AddForce(direction * -4);
+            ball.AddForce(direction * force.Length());
+            AddForce(direction * -force.Length());
         }
 
+        /*
         public void AddForce(Vector2 force)
         {
             this.force = force + this.force;
             velocity = force * mass;
-        }
+        }*/
 
         /// <summary>
         /// Draws the ball to the screen (WITHOUT hitbox)

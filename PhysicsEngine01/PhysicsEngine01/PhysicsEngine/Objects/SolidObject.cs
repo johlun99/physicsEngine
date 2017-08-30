@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace PhysicsEngine01.PhysicsEngine
+namespace PhysicsEngine01.PhysicsEngine.Objects
 {
-    class SolidObject
+    abstract class SolidObject
     {
         protected Rectangle sourceRectangle;
         protected Rectangle hitbox;
@@ -20,7 +20,7 @@ namespace PhysicsEngine01.PhysicsEngine
         protected Vector2 force;
 
         protected const float gravityAccelleration = 0.9f;
-        protected float scale = 0.01f;
+        protected float scale = 0.03f;
         protected float rotation = 0;
         protected float mass;
 
@@ -40,7 +40,11 @@ namespace PhysicsEngine01.PhysicsEngine
         }
 
         public Rectangle Hitbox { get { return hitbox; } }
-
-
+        
+        public void AddForce(Vector2 force)
+        {
+            this.force += force;
+            velocity = force * mass;
+        }
     }
 }
