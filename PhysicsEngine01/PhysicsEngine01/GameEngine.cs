@@ -173,7 +173,7 @@ namespace PhysicsEngine01
 
             foreach (var b in balls)
             {
-                b.Draw(spriteBatch, ballTexture, hitboxColor);
+                b.Draw(spriteBatch, ballTexture);
             }
 
             fps.Update((float)gameTime.TotalGameTime.TotalSeconds);

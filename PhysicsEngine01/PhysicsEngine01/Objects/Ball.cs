@@ -85,7 +85,7 @@ namespace PhysicsEngine01.Objects
             Vector2 direction = ball.position - position;
             direction.Normalize();
 
-            ball.AddForce(direction * force);
+            ball.AddForce(direction * 10);
         }
 
         public void AddForce(Vector2 force)
