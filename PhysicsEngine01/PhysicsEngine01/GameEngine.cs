@@ -32,6 +32,7 @@ namespace PhysicsEngine01
         int screenHeight;
         int screenWidth;
         int ballCounter = 0;
+        int collisionCounter = 0;
 
         double ballTimer = 0;
 
@@ -127,7 +128,7 @@ namespace PhysicsEngine01
                 b.Update(screenHeight);
             }
 
-            //checkBallCollisions();
+            checkBallCollisions();
 
             fpsCounter = fps.CurrentFramesPerSecond;
             ballCounter = balls.Count;
@@ -150,10 +151,12 @@ namespace PhysicsEngine01
         private void checkBallCollisions()
         {
             for (int i = 0; i < balls.Count; i++)
-                for (int j = 0; j < balls.Count; j++)
+                for (int j = i + 1; j < balls.Count; j++)
                     if (i != j && balls[i].Hitbox.Intersects(balls[j].Hitbox))
                     {
-                        Debug.WriteLine($"Collision detected between balls[{i}] & balls[{j}]");
+                        collisionCounter++;
+                        balls[i].HandleCollision(balls[j]);
+                        //Debug.WriteLine($"Collision detected between balls[{i}] & balls[{j}]");
                     }
         }
 
@@ -176,6 +179,7 @@ namespace PhysicsEngine01
             fps.Update((float)gameTime.TotalGameTime.TotalSeconds);
             spriteBatch.DrawString(debugFont, $"FPS: {fpsCounter}", new Vector2(20, 20), Color.White);
             spriteBatch.DrawString(debugFont, $"Counter: {ballCounter}", new Vector2(20, 40), Color.White);
+            spriteBatch.DrawString(debugFont, $"Collision Counter: {collisionCounter}", new Vector2(20, 60), Color.White);
 
             crosshair.Draw(spriteBatch);
 

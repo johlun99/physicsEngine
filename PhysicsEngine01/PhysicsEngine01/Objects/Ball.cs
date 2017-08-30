@@ -32,6 +32,7 @@ namespace PhysicsEngine01.Objects
         }
 
         public Rectangle Hitbox { get { return hitbox; } }
+        public float Radius { get { return hitbox.Width / 2; } }
         #endregion
 
         #region Methods
@@ -77,6 +78,14 @@ namespace PhysicsEngine01.Objects
                 velocity.Y = 0 - velocity.Y + 2;
                 position.Y = screenHeight - origin.Y * scale;
             }
+        }
+
+        public void HandleCollision(Ball ball)
+        {
+            Vector2 direction = ball.position - position;
+            direction.Normalize();
+
+            ball.AddForce(direction * force);
         }
 
         public void AddForce(Vector2 force)
