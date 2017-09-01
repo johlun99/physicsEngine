@@ -11,6 +11,7 @@ namespace PhysicsEngine01.PhysicsEngine.Objects
 {
     abstract class SolidObject
     {
+        #region Variables & Properties
         protected Rectangle sourceRectangle;
         protected Rectangle hitbox;
 
@@ -40,11 +41,17 @@ namespace PhysicsEngine01.PhysicsEngine.Objects
         }
 
         public Rectangle Hitbox { get { return hitbox; } }
-        
+        #endregion
+
         public void AddForce(Vector2 force)
         {
             this.force += force;
             velocity = force * mass;
+
+            if (Math.Abs(velocity.Length()) < 0.1)
+                velocity = new Vector2(0, 0);
         }
+
+        public abstract void HandleCollision(Ball ball);
     }
 }

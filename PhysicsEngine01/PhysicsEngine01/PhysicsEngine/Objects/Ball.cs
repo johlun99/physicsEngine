@@ -1,40 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace PhysicsEngine01.PhysicsEngine.Objects
 {
     class Ball : SolidObject
     {
         #region Variables & properties
-        /*Rectangle sourceRectangle;
-        Rectangle hitbox;
-
-        Vector2 position;
-        Vector2 origin;
-        Vector2 velocity;
-        Vector2 force;
-
-        const float gravityAccelleration = 0.8f;
-        float scale = 0.03f;
-        float rotation = 0;
-        float mass;
-
-        int screenHeight;
-        int screenWidth;
-
-        public Vector2 Position
-        {
-            get
-            {
-                Vector2 temp = position;
-                temp.Y -= origin.Y * scale;
-                temp.X -= origin.X * scale;
-
-                return temp;
-            }
-        }
-
-        public Rectangle Hitbox { get { return hitbox; } }*/
         public float Radius { get { return hitbox.Width / 2; } }
         #endregion
 
@@ -71,7 +43,6 @@ namespace PhysicsEngine01.PhysicsEngine.Objects
         public void Update()
         {
             velocity.Y += gravityAccelleration;
-            position += velocity;
 
             force = velocity * mass;
 
@@ -80,18 +51,29 @@ namespace PhysicsEngine01.PhysicsEngine.Objects
 
             if (position.Y > screenHeight - origin.Y * scale)
             {
-                velocity.Y = 0 - velocity.Y + 2;
+                if (Math.Abs(velocity.Y) < 0.1)
+                    velocity.Y = 0;
+
+                else
+                    velocity.Y = 0 - velocity.Y + 2;
+
                 position.Y = screenHeight - origin.Y * scale;
             }
 
             if (position.X < 0 + origin.X * scale ||
                 position.X > screenWidth - origin.X * scale)
             {
-                velocity.X = velocity.X * -1;
-            }
-        }
+                if (Math.Abs(velocity.X) < 0.1)
+                    velocity.X = 0;
 
-        public void HandleCollision(Ball ball)
+                else
+                    velocity.X = velocity.X * -1;
+            }
+
+            position += velocity;
+        }
+        
+        public override void HandleCollision(Ball ball)
         {
             Vector2 direction = ball.position - position;
             direction.Normalize();
@@ -99,13 +81,6 @@ namespace PhysicsEngine01.PhysicsEngine.Objects
             ball.AddForce(direction * force.Length());
             AddForce(direction * -force.Length());
         }
-
-        /*
-        public void AddForce(Vector2 force)
-        {
-            this.force = force + this.force;
-            velocity = force * mass;
-        }*/
 
         /// <summary>
         /// Draws the ball to the screen (WITHOUT hitbox)

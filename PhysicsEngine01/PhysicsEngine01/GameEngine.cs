@@ -37,8 +37,9 @@ namespace PhysicsEngine01
         double ballTimer = 0;
 
         float fpsCounter = 0;
-
-        List<Ball> balls = new List<Ball>();
+        float ballScale = 0.03f;
+        
+        List<BallNew> balls = new List<BallNew>();
 
         public GameEngine()
         {
@@ -104,13 +105,24 @@ namespace PhysicsEngine01
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            KeyboardState keyboard = Keyboard.GetState();
+            if (keyboard.IsKeyDown(Keys.R))
+            {
+                for (int i = 0; i < balls.Count; i++)
+                {
+                    balls.RemoveAt(i);
+                }
+                ballCounter = 0;
+                collisionCounter = 0;
+            }
+
             MouseState mouse = Mouse.GetState();
 
             // Keep track of delay between balls
             ballTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
 
             // Create new balls if the delay is correct
-            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 200)
+            if (mouse.LeftButton == ButtonState.Pressed && ballTimer > 0)
             {
                 ballTimer = 0;
                 createBall();
@@ -143,7 +155,7 @@ namespace PhysicsEngine01
         {
             MouseState mouse = Mouse.GetState();
 
-            Ball b = new Ball(ballTexture, new Vector2(mouse.Position.X, mouse.Position.Y), new Vector2(0, 0), 1, screenHeight, screenWidth);
+            BallNew b = new BallNew(new Vector2(ballTexture.Width, ballTexture.Height), new Vector2(mouse.Position.X, mouse.Position.Y), ballScale);
 
             balls.Add(b);
         }
@@ -153,13 +165,28 @@ namespace PhysicsEngine01
         /// </summary>
         private void checkBallCollisions()
         {
+            Debug.WriteLine("I'm inside checkBallCollisions()" + screenHeight + " " + screenWidth);
+
+            for (int i = 0; i < balls.Count; i++)
+            {
+                if (balls[i].Position.Y > screenHeight && balls[i].Velocity.Y > 0)
+                    balls[i].AddForce(balls[i].Force * -1);
+
+                if (balls[i].Position.X < 0 && balls[i].Velocity.X < 0)
+                    balls[i].AddForce(new Vector2(balls[i].Force.X * -1, 0));
+
+                else if (balls[i].Position.X > screenWidth && balls[i].Velocity.X > 0)
+                    balls[i].AddForce(new Vector2(balls[i].Force.X * -1, 0));
+            }
+
+            /*
             for (int i = 0; i < balls.Count; i++)
                 for (int j = i + 1; j < balls.Count; j++)
                     if (i != j && balls[i].Hitbox.Intersects(balls[j].Hitbox))
                     {
                         collisionCounter++;
                         balls[i].HandleCollision(balls[j]);
-                    }
+                    }*/
         }
 
         /// <summary>
