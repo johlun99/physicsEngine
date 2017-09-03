@@ -165,7 +165,7 @@ namespace PhysicsEngine01
         /// </summary>
         private void checkBallCollisions()
         {
-            Debug.WriteLine("I'm inside checkBallCollisions()" + screenHeight + " " + screenWidth);
+            Debug.WriteLine("I'm inside checkBallCollisions()");
 
             for (int i = 0; i < balls.Count; i++)
             {

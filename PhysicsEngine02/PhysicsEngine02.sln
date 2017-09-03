@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhysicsEngine02", "PhysicsEngine02\PhysicsEngine02.csproj", "{5FEC3744-5EE2-47D8-93F8-80E743759537}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5FEC3744-5EE2-47D8-93F8-80E743759537}.Debug|x86.ActiveCfg = Debug|x86
+		{5FEC3744-5EE2-47D8-93F8-80E743759537}.Debug|x86.Build.0 = Debug|x86
+		{5FEC3744-5EE2-47D8-93F8-80E743759537}.Release|x86.ActiveCfg = Release|x86
+		{5FEC3744-5EE2-47D8-93F8-80E743759537}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A016F586-1863-4B10-8164-FAA603B2EA5A}
+	EndGlobalSection
+EndGlobal
