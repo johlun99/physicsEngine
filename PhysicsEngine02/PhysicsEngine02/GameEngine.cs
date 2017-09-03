@@ -12,6 +12,7 @@ namespace PhysicsEngine02
     /// </summary>
     public class GameEngine : Game
     {
+        #region Variables
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -21,6 +22,8 @@ namespace PhysicsEngine02
         Texture2D ballTexture;
         Texture2D hitboxColor;
         SpriteFont debugFont;
+
+        Crosshair crosshair;
 
         List<Ball> balls = new List<Ball>();
         List<Block> blocks = new List<Block>();
@@ -34,6 +37,8 @@ namespace PhysicsEngine02
         float ballScale = 0.03f;
 
         int ballCounter = 0;
+        int blockCounter = 0;
+        #endregion
 
         #region Constructors and Initializing
         public GameEngine()
@@ -65,6 +70,8 @@ namespace PhysicsEngine02
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            crosshair = new Crosshair(Content.Load<Texture2D>("other/redcrosshair"), 0.1f);
+
             ballTexture = Content.Load<Texture2D>("objects/ball");
 
             hitboxColor = new Texture2D(GraphicsDevice, 1, 1);
@@ -100,6 +107,7 @@ namespace PhysicsEngine02
             KeyboardInput();
 
             UpdateBalls();
+            UpdateBlocks();
 
             base.Update(gameTime);
         }
@@ -111,6 +119,8 @@ namespace PhysicsEngine02
         private void MouseInput()
         {
             mouse = Mouse.GetState();
+
+            crosshair.Update(new Vector2(mouse.X, mouse.Y));
 
             if (mouse.LeftButton == ButtonState.Pressed)
                 SpawnBall(new Vector2(mouse.X, mouse.Y));
@@ -135,6 +145,16 @@ namespace PhysicsEngine02
                     debugMode = false;
 
                 clickDelay = 0;
+            }
+
+            // Clears the screen of elements
+            if (keyboard.IsKeyDown(Keys.C))
+            {
+                for (int i = 0; i < balls.Count; i++)
+                    balls.RemoveAt(i);
+
+                for (int i = 0; i < blocks.Count; i++)
+                    blocks.RemoveAt(i);
             }
         }
         #endregion
@@ -179,6 +199,11 @@ namespace PhysicsEngine02
             ballCounter = balls.Count;
         }
 
+        private void UpdateBlocks()
+        {
+            blockCounter = blocks.Count;
+        }
+
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -199,11 +224,14 @@ namespace PhysicsEngine02
                     b.Draw(spriteBatch, ballTexture, hitboxColor);
 
                 spriteBatch.DrawString(debugFont, $"Ball Count: {ballCounter}", new Vector2(20, 20), Color.White);
+                spriteBatch.DrawString(debugFont, $"Block Count: {blockCounter}", new Vector2(20, 40), Color.White);
             }
 
             else
                 foreach (var b in balls)
                     b.Draw(spriteBatch, ballTexture);
+
+            crosshair.Draw(spriteBatch);
 
             spriteBatch.End();
 

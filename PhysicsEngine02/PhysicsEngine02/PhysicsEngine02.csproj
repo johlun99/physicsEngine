@@ -41,6 +41,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Crosshair.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="PhysicsEng\Objects\Ball.cs" />
     <Compile Include="PhysicsEng\Objects\Block.cs" />
