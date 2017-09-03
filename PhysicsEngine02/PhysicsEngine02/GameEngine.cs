@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using PhysicsEngine02.PhysicsEng.Objects;
+using System.Collections.Generic;
+
 namespace PhysicsEngine02
 {
     /// <summary>
@@ -12,6 +15,27 @@ namespace PhysicsEngine02
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        MouseState mouse;
+        KeyboardState keyboard;
+
+        Texture2D ballTexture;
+        Texture2D hitboxColor;
+        SpriteFont debugFont;
+
+        List<Ball> balls = new List<Ball>();
+        List<Block> blocks = new List<Block>();
+
+        bool debugMode = false;
+
+        double clickDelay = 0;
+        double ballDelay = 0;
+        double blockDelay = 0;
+
+        float ballScale = 0.03f;
+
+        int ballCounter = 0;
+
+        #region Constructors and Initializing
         public GameEngine()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -41,6 +65,12 @@ namespace PhysicsEngine02
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            ballTexture = Content.Load<Texture2D>("objects/ball");
+
+            hitboxColor = new Texture2D(GraphicsDevice, 1, 1);
+            hitboxColor.SetData<Color>(new Color[] { Color.Red });
+
+            debugFont = Content.Load<SpriteFont>("Fonts/debugFont");
         }
 
         /// <summary>
@@ -51,6 +81,7 @@ namespace PhysicsEngine02
         {
             // TODO: Unload any non ContentManager content here
         }
+        #endregion
 
         /// <summary>
         /// Allows the game to run logic such as updating the world,
@@ -63,8 +94,89 @@ namespace PhysicsEngine02
                 Exit();
 
             // TODO: Add your update logic here
+            clickDelay += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            MouseInput();
+            KeyboardInput();
+
+            UpdateBalls();
 
             base.Update(gameTime);
+        }
+
+        #region User Inputs
+        /// <summary>
+        /// Collects and handles input from the mouse
+        /// </summary>
+        private void MouseInput()
+        {
+            mouse = Mouse.GetState();
+
+            if (mouse.LeftButton == ButtonState.Pressed)
+                SpawnBall(new Vector2(mouse.X, mouse.Y));
+
+            if (mouse.RightButton == ButtonState.Pressed)
+                SpawnBlock(new Vector2(mouse.X, mouse.Y));
+        }
+
+        /// <summary>
+        /// Collects and handles keyboard input
+        /// </summary>
+        private void KeyboardInput()
+        {
+            keyboard = Keyboard.GetState();
+
+            if (keyboard.IsKeyDown(Keys.D) && clickDelay > 400)
+            {
+                if (!debugMode)
+                    debugMode = true;
+
+                else
+                    debugMode = false;
+
+                clickDelay = 0;
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Spawns a new ball at the given location
+        /// </summary>
+        /// <param name="startPosition"></param>
+        private void SpawnBall(Vector2 startPosition)
+        {
+            Ball b = new Ball(new Vector2(ballTexture.Width, ballTexture.Height), new Vector2(startPosition.X, startPosition.Y), ballScale);
+            balls.Add(b);
+        }
+
+        /// <summary>
+        /// Spawns a new block at the given location
+        /// </summary>
+        /// <param name="position"></param>
+        private void SpawnBlock(Vector2 position)
+        {
+            Block b = new Block(new Vector2(15, 15), position);
+            blocks.Add(b);
+        }
+
+        /// <summary>
+        /// Update all balls on screen (removes the ones that's off screen)
+        /// </summary>
+        private void UpdateBalls()
+        {
+            for (int i = 0; i < balls.Count; i++)
+            {
+                balls[i].Update();
+
+                if (balls[i].Position.Y < 0 ||
+                    balls[i].Position.X < 0 ||
+                    balls[i].Position.Y > GraphicsDevice.Viewport.Bounds.Height ||
+                    balls[i].Position.X > GraphicsDevice.Viewport.Bounds.Width)
+                {
+                    balls.RemoveAt(i);
+                }
+            }
+            ballCounter = balls.Count;
         }
 
         /// <summary>
@@ -73,9 +185,27 @@ namespace PhysicsEngine02
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            foreach (var b in blocks)
+                b.Draw(spriteBatch, hitboxColor);
+
+            if (debugMode)
+            {
+                foreach (var b in balls)
+                    b.Draw(spriteBatch, ballTexture, hitboxColor);
+
+                spriteBatch.DrawString(debugFont, $"Ball Count: {ballCounter}", new Vector2(20, 20), Color.White);
+            }
+
+            else
+                foreach (var b in balls)
+                    b.Draw(spriteBatch, ballTexture);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

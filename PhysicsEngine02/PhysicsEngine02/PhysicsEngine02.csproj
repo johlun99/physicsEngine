@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="GameEngine.cs" />
     <Compile Include="PhysicsEng\Objects\Ball.cs" />
+    <Compile Include="PhysicsEng\Objects\Block.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
