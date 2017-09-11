@@ -2,17 +2,23 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using Physix.MovingObjects;
+
 namespace physicsEngine03
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class GameEngine : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+        Ball ball = new Ball(new Vector2(100, 100), new Vector2(100, 100));
+
+        Texture2D ballTexture;
+
+        public GameEngine()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -29,6 +35,8 @@ namespace physicsEngine03
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+            ball = new Ball(new Vector2(ballTexture.Width, ballTexture.Height), new Vector2(100, 100), 0.2f);
         }
 
         /// <summary>
@@ -41,6 +49,7 @@ namespace physicsEngine03
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            ballTexture = Content.Load<Texture2D>("Objects/ball");
         }
 
         /// <summary>
@@ -76,6 +85,11 @@ namespace physicsEngine03
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            ball.Draw(spriteBatch, ballTexture);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
