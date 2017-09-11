@@ -2,7 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-using Physix.MovingObjects;
+using Physix.Objects;
+using System.Collections.Generic;
 
 namespace physicsEngine03
 {
@@ -14,9 +15,19 @@ namespace physicsEngine03
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Ball ball = new Ball(new Vector2(100, 100), new Vector2(100, 100));
+        Cursor cursor;
 
+        Texture2D hitboxColor;
         Texture2D ballTexture;
+
+        List<Ball> balls = new List<Ball>();
+
+        double clickDelay = 0;
+
+        float screenHeight;
+        float screenWidth;
+
+        bool debugMode = false;
 
         public GameEngine()
         {
@@ -33,10 +44,10 @@ namespace physicsEngine03
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            screenHeight = GraphicsDevice.Viewport.Bounds.Height;
+            screenWidth = GraphicsDevice.Viewport.Bounds.Width;
 
             base.Initialize();
-
-            ball = new Ball(new Vector2(ballTexture.Width, ballTexture.Height), new Vector2(100, 100), 0.2f);
         }
 
         /// <summary>
@@ -50,6 +61,11 @@ namespace physicsEngine03
 
             // TODO: use this.Content to load your game content here
             ballTexture = Content.Load<Texture2D>("Objects/ball");
+
+            cursor = new Cursor(Content.Load<Texture2D>("Other/redcrosshair"), 0.1f);
+
+            hitboxColor = new Texture2D(GraphicsDevice, 1, 1);
+            hitboxColor.SetData<Color>(new Color[] { Color.Red });
         }
 
         /// <summary>
@@ -72,8 +88,56 @@ namespace physicsEngine03
                 Exit();
 
             // TODO: Add your update logic here
+            MouseInput();
+            KeyboardInput(gameTime);
+
+            UpdateBalls();
 
             base.Update(gameTime);
+        }
+
+        private void MouseInput()
+        {
+            MouseState mouse = Mouse.GetState();
+
+            cursor.Update(new Vector2(mouse.X, mouse.Y));
+
+            if (mouse.LeftButton == ButtonState.Pressed)
+                SpawnBall(new Vector2(mouse.X, mouse.Y));
+        }
+
+        private void KeyboardInput(GameTime gameTime)
+        {
+            KeyboardState keyboard = Keyboard.GetState();
+            clickDelay += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+            if (keyboard.IsKeyDown(Keys.D) && clickDelay > 100)
+            {
+                clickDelay = 0;
+
+                if (!debugMode)
+                    debugMode = true;
+
+                else
+                    debugMode = false;
+            }
+        }
+
+        private void SpawnBall(Vector2 position)
+        {
+            Ball b = new Ball(ballTexture, position, 0.03f);
+            balls.Add(b);
+        }
+
+        private void UpdateBalls()
+        {
+            foreach (var b in balls)
+            {
+                b.Update();
+
+                if (b.Hitbox.Y + b.Hitbox.Height > screenHeight)
+                    b.AddVelocity(-b.Velocity);
+            }
         }
 
         /// <summary>
@@ -87,7 +151,19 @@ namespace physicsEngine03
             // TODO: Add your drawing code here
             spriteBatch.Begin();
 
-            ball.Draw(spriteBatch, ballTexture);
+            if (!debugMode)
+            {
+                foreach (var b in balls)
+                    b.Draw(spriteBatch);
+            }
+
+            else
+            {
+                foreach (var b in balls)
+                    b.DrawWithHitbox(spriteBatch, hitboxColor);
+            }
+
+            cursor.Draw(spriteBatch);
 
             spriteBatch.End();
 

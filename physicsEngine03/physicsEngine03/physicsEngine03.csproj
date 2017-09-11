@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -41,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Cursor.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Physix\Physix.csproj">
-      <Project>{51e1ffdc-5b0e-430c-ad48-79b3626d9b5d}</Project>
+      <Project>{c7f3062f-51c6-4374-8df1-8a68547205a7}</Project>
       <Name>Physix</Name>
     </ProjectReference>
   </ItemGroup>

@@ -4,13 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Physix
+namespace Physix.Tools
 {
-    class Program
+    class Math
     {
-        public static void Main()
-        {
-
-        }
     }
 }

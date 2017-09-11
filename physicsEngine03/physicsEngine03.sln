@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "physicsEngine03", "physicsEngine03\physicsEngine03.csproj", "{87147B7C-4EBD-43CF-8B55-EFD45BEE3D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physix", "Physix\Physix.csproj", "{51E1FFDC-5B0E-430C-AD48-79B3626D9B5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physix", "Physix\Physix.csproj", "{C7F3062F-51C6-4374-8DF1-8A68547205A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,12 +21,14 @@ Global
 		{87147B7C-4EBD-43CF-8B55-EFD45BEE3D23}.Release|Any CPU.ActiveCfg = Release|x86
 		{87147B7C-4EBD-43CF-8B55-EFD45BEE3D23}.Release|x86.ActiveCfg = Release|x86
 		{87147B7C-4EBD-43CF-8B55-EFD45BEE3D23}.Release|x86.Build.0 = Release|x86
-		{51E1FFDC-5B0E-430C-AD48-79B3626D9B5D}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{51E1FFDC-5B0E-430C-AD48-79B3626D9B5D}.Debug|x86.ActiveCfg = Debug|x86
-		{51E1FFDC-5B0E-430C-AD48-79B3626D9B5D}.Debug|x86.Build.0 = Debug|x86
-		{51E1FFDC-5B0E-430C-AD48-79B3626D9B5D}.Release|Any CPU.ActiveCfg = Release|x86
-		{51E1FFDC-5B0E-430C-AD48-79B3626D9B5D}.Release|x86.ActiveCfg = Release|x86
-		{51E1FFDC-5B0E-430C-AD48-79B3626D9B5D}.Release|x86.Build.0 = Release|x86
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Debug|x86.Build.0 = Debug|Any CPU
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{C7F3062F-51C6-4374-8DF1-8A68547205A7}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
